@@ -59,10 +59,17 @@ const DEFAULT_SETTINGS: Settings = {
   showScatter: true,
   showATMLine: true,
 };
+/// <reference types="vite/client" />
+
 
 // ─── Fetch ────────────────────────────────────────────────────────────────────
+const IS_DEMO = import.meta.env.VITE_DEMO === "true";
+
 async function fetchAllOptions(ticker: string): Promise<{ spot: number; points: VolPoint[]; surface: any }> {
-  const res = await fetch(`/api/options/${ticker}`);
+  const url = IS_DEMO
+    ? `./demo-data/${ticker}.json`
+    : `/api/options/${ticker}`;
+  const res = await fetch(url);
   if (!res.ok) {
     const json = await res.json().catch(() => ({ error: `HTTP ${res.status}` }));
     throw new Error(json.error || `HTTP ${res.status}`);

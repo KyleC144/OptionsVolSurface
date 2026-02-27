@@ -7,7 +7,8 @@
     "build": "vite build",
     "start": "NODE_ENV=production node server.js",
     "demo": "NODE_ENV=production DEMO=true node server.js",
-    "capture": "node scripts/capture.js"
+    "capture": "node scripts/capture.js",
+    "build:demo": "cp -r demo-data public/demo-data && VITE_DEMO=true vite build && rm -rf public/demo-data"
   },
   "dependencies": {
     "concurrently": "^8.2.2",
@@ -16,10 +17,10 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.1",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
-    "@vitejs/plugin-react": "^4.2.1",
     "typescript": "^5.3.3",
-    "vite": "^7.3.1"
+    "vite": "^5.1.0"
   }
 }
