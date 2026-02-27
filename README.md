@@ -1,9 +1,11 @@
-# VolSurface
+# VolSurface  
 
 Real-time implied volatility surface visualizer with Black-Scholes greeks. Fetches live options chains from Yahoo Finance, computes IV from mid-price quotes, calculates Δ/Γ/ν/Θ for every contract, and renders an interactive 3D surface.
 
-![VolSurface screenshot](images/VolatilitySurfaceExample.png)
 
+
+![VolSurface screenshot](images/VolatilitySurfaceExample.png)
+[![Live Demo](https://img.shields.io/badge/demo-live-4ade80?style=flat-square)](https://kylec144.github.io/OptionsVolSurface/)
 ---
 
 ## Features
@@ -106,7 +108,7 @@ npm start        # serves built frontend + API on http://localhost:3000
 Yahoo Finance
      │
      ▼
-fetch_options.py          <- runs as a subprocess from server.js
+GetChainValues.py         <- runs as a subprocess from server.js
   ├── yf.Ticker(ticker)   <- fetch options chain per expiry
   ├── is_bad_quote()      <- drop options with no valid price
   ├── reject_outliers()   <- IQR filter removes extreme IV spikes
