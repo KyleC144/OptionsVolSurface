@@ -23,16 +23,39 @@ console.log(`  Using Python: ${PYTHON}`);
 //                  volume, openInterest, inTheMoney,
 //                  BSprice, delta, gamma, vega, theta
 
+const DEMO_MODE = process.env.DEMO === "true";
+const DEMO_DIR  = path.join(__dirname, "demo-data");
+if (DEMO_MODE) console.log("  ⚡  DEMO MODE — serving static fixture data");
+
 app.get("/api/options/:ticker", async (req, res) => {
   const ticker = (req.params.ticker || "").toUpperCase().replace(/[^A-Z.^-]/g, "");
   if (!ticker) return res.status(400).json({ error: "Missing ticker" });
+
+  // Demo mode: serve pre-saved fixture JSON
+  const demoFile = path.join(DEMO_DIR, `${ticker}.json`);
+  if (DEMO_MODE || req.query.demo === "true") {
+    if (existsSync(demoFile)) {
+      console.log(`[demo] serving ${ticker} from fixture`);
+      const raw = await import("fs").then(fs => fs.promises.readFile(demoFile, "utf8"));
+      return res.json(JSON.parse(raw));
+    } else if (DEMO_MODE) {
+      // In demo mode, fall back to SPY fixture if ticker not found
+      const fallback = path.join(DEMO_DIR, "SPY.json");
+      if (existsSync(fallback)) {
+        console.log(`[demo] ${ticker} not found, serving SPY fixture`);
+        const raw = await import("fs").then(fs => fs.promises.readFile(fallback, "utf8"));
+        return res.json(JSON.parse(raw));
+      }
+      return res.status(404).json({ error: `No demo data for ${ticker}. Run: npm run capture` });
+    }
+  }
 
   console.log(`[options] Fetching ${ticker}...`);
   try {
     const { stdout, stderr } = await execFileAsync(
       PYTHON,
       [FETCH_SCRIPT, ticker],
-      { maxBuffer: 50 * 1024 * 1024 } // 50MB — options chains are large
+      { maxBuffer: 50 * 1024 * 1024 }
     );
     if (stderr) console.warn(`[options] stderr:`, stderr.slice(0, 200));
     const result = JSON.parse(stdout);

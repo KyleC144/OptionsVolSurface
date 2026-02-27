@@ -2,6 +2,9 @@ import sys, json, math, datetime, os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import options as opts
 import yfinance as yf
+from scipy.interpolate import LinearNDInterpolator, NearestNDInterpolator
+import numpy as np
+from scipy.stats import norm
 
 def clean(val):
     if val is None: return None
@@ -43,13 +46,11 @@ def reject_outliers(options_list):
     return [o for o, iv in zip(options_list, ivs) if iv is not None and lo <= iv <= hi]
 
 def bs_call(S, K, T, r, sigma):
-    from scipy.stats import norm
     d1 = (math.log(S/K) + (r + 0.5*sigma**2)*T) / (sigma*math.sqrt(T))
     d2 = d1 - sigma*math.sqrt(T)
     return S*norm.cdf(d1) - K*math.exp(-r*T)*norm.cdf(d2)
 
 def bs_put(S, K, T, r, sigma):
-    from scipy.stats import norm
     d1 = (math.log(S/K) + (r + 0.5*sigma**2)*T) / (sigma*math.sqrt(T))
     d2 = d1 - sigma*math.sqrt(T)
     return K*math.exp(-r*T)*norm.cdf(-d2) - S*norm.cdf(-d1)
@@ -89,7 +90,7 @@ def add_greeks(option, is_call, spot, T, r):
 
 def main():
     ticker = sys.argv[1] if len(sys.argv) > 1 else "SPY"
-    r = 0.05
+    r = sys.argv[2] if len(sys.argv) > 2 else 0.05
     t = yf.Ticker(ticker)
     spot  = t.fast_info["lastPrice"]
     dates = list(t.options)
@@ -120,10 +121,7 @@ def main():
         if T <= 0: continue
         for call in chain["calls"]: add_greeks(call, True,  spot, T, r)
         for put  in chain["puts"]:  add_greeks(put,  False, spot, T, r)
-
-    # Linear interpolation via scipy
-    from scipy.interpolate import LinearNDInterpolator, NearestNDInterpolator
-    import numpy as np
+    
 
     all_pts = []
     for date, chain in data.items():

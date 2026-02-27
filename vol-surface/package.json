@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "concurrently \"node server.js\" \"vite\"",
     "build": "vite build",
-    "start": "NODE_ENV=production node server.js"
+    "start": "NODE_ENV=production node server.js",
+    "demo": "NODE_ENV=production DEMO=true node server.js",
+    "capture": "node scripts/capture.js"
   },
   "dependencies": {
     "concurrently": "^8.2.2",
