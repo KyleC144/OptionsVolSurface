@@ -201,9 +201,9 @@ Returns the full options chain with greeks and precomputed interpolation grid.
 | Parameter | Location | Default | Notes |
 |---|---|---|---|
 | Risk-free rate | `fetch_options.py` | `0.05` (5%) | Change `r = 0.05` |
-| Moneyness range | `fetch_options.py` | `0.75 – 1.35` | Strike/spot bounds |
+| Moneyness range | `fetch_options.py` | `0.85 – 1.15` | Strike/spot bounds |
 | Max expirations | `fetch_options.py` | 4 near + 12 sampled | Near-term always included |
-| Date horizon | `fetch_options.py` | 2.5 years | `timedelta(days=912)` |
+| Date horizon | `fetch_options.py` | 100 days | `timedelta(days=100)` |
 | Grid resolution | `fetch_options.py` | 50 × 50 | Increase for smoother surface |
 | Refresh interval | `App.tsx` | 60 seconds | `setInterval(..., 60_000)` |
 
