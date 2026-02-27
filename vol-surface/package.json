@@ -8,7 +8,7 @@
     "start": "NODE_ENV=production node server.js",
     "demo": "NODE_ENV=production DEMO=true node server.js",
     "capture": "node scripts/capture.js",
-    "build:demo": "cp -r demo-data public/demo-data && VITE_DEMO=true vite build && rm -rf public/demo-data"
+    "build:demo": "mkdir -p public/demo-data && cp -r demo-data/* public/demo-data && VITE_DEMO=true vite build && rm -rf public/demo-data"
   },
   "dependencies": {
     "concurrently": "^8.2.2",
