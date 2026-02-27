@@ -30,7 +30,7 @@ class BlackScholesCall:
         x1 = x1/(asset_volatility*(time_to_expiration**.5))
         n1 = -((asset_price*asset_volatility*norm.pdf(x1))/(2*m.sqrt(time_to_expiration)))
         n2 = -(risk_free_rate*strike_price*m.exp(-risk_free_rate*time_to_expiration)*norm.cdf((x1 - (asset_volatility*m.sqrt(time_to_expiration)))))
-        return (n1 + n2)
+        return (n1 + n2)/365
 
     def callPrice(self, asset_price, asset_volatility, strike_price, time_to_expiration, risk_free_rate):
         b = m.exp(-risk_free_rate*time_to_expiration)
@@ -87,7 +87,7 @@ class BlackScholesPut:
         d2 = x1 - asset_volatility*m.sqrt(time_to_expiration)
         n1 = -((asset_price*asset_volatility*norm.pdf(x1))/(2*m.sqrt(time_to_expiration)))
         n2 = -(risk_free_rate*strike_price*m.exp(-risk_free_rate*time_to_expiration)*norm.cdf(-d2))
-        return (n1 + n2)
+        return (n1 + n2)/365
 
     def putPrice(self, asset_price, asset_volatility, strike_price, time_to_expiration, risk_free_rate):
         b = m.exp(-risk_free_rate*time_to_expiration)
