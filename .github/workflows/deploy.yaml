@@ -35,7 +35,7 @@ jobs:
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: app/package-lock.json
+          cache-dependency-path: vol-surface/package-lock.json
 
       - name: Install dependencies
         run: npm install
@@ -51,7 +51,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: app/dist   # ← also update this
+          path: vol-surface/dist   # ← also update this
 
       - name: Deploy to GitHub Pages
         id: deployment
