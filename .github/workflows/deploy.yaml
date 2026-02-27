@@ -21,6 +21,11 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
 
+    # ← Change this to the folder containing your package.json
+    defaults:
+      run:
+        working-directory: vol-surface
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -30,6 +35,7 @@ jobs:
         with:
           node-version: 20
           cache: npm
+          cache-dependency-path: app/package-lock.json
 
       - name: Install dependencies
         run: npm install
@@ -37,8 +43,7 @@ jobs:
       - name: Build demo
         run: npm run build:demo
         env:
-          # Set this to your repo name, e.g. /vol-surface/
-          VITE_BASE_URL: /${{ github.event.repository.name }}/vol-surface/
+          VITE_BASE_URL: /${{ github.event.repository.name }}/
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -46,7 +51,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: app/dist   # ← also update this
 
       - name: Deploy to GitHub Pages
         id: deployment
