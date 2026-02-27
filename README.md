@@ -18,7 +18,7 @@ Real-time implied volatility surface visualizer with Black-Scholes greeks. Fetch
 - **Quote filtering** — drops options with missing prices and extreme IV outliers (3× IQR)
 - **Hover tooltips** — click any dot to see strike, expiry, DTE, IV, bid/ask, and all five greeks
 - **Auto-refresh** — reloads every 60 seconds
-- **Quick-pick tickers** — SPY, QQQ, AAPL, TSLA, NVDA, AMZN, IWM, GLD, MSFT, META, AMD
+- **Quick-pick tickers** — SPY, QQQ, AAPL, TSLA, NVDA, AMZN, IWM, GLD, MSFT, META
 
 ---
 
